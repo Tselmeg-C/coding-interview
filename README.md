@@ -71,3 +71,13 @@ docker run --rm -p 5181:3001 coding-interview
 
 Open http://localhost:5181. The container serves the frontend, HTTP API, and
 Socket.IO service from the same origin.
+
+## Railway deployment
+
+Railway deploys this repository using the root Dockerfile. The container reads
+the platform-provided PORT environment variable and serves the frontend, API,
+and Socket.IO endpoint from one public service.
+
+After a successful Railway deployment, use the service's generated public
+domain to open the application and verify that two browser sessions can join
+the same room and synchronize edits.
