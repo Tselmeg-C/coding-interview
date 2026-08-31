@@ -19,6 +19,7 @@ label, .share span { display: block; font-size: .8rem; color: #b9c4d8; margin-bo
 select { padding: .45rem; border-radius: .35rem; }
 .share { display: flex; align-items: center; gap: .8rem; } .share span { margin: 0; }
 .secondary { background: #30415f; color: #e8edf7; }
+.execution-controls { display: flex; gap: .75rem; }
 .workspace { display: grid; gap: 1.25rem; grid-template-columns: minmax(0, 2.3fr) minmax(240px, 1fr); }
 .editor-panel, .output-panel { background: #19243a; border-radius: .75rem; padding: 1rem; overflow: hidden; }
 pre { white-space: pre-wrap; color: #b9c4d8; min-height: 140px; }

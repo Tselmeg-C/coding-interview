@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import CodeEditor from './components/CodeEditor';
+import { createExecutionService } from './services/executionService';
 import { roomService } from './services/roomService';
 
 function HomePage() {
@@ -40,7 +41,9 @@ function RoomPage() {
   const [error, setError] = useState('');
   const [output, setOutput] = useState('Run code to see output here.');
   const [copied, setCopied] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
   const connection = useRef(null);
+  const executor = useRef(createExecutionService());
 
   useEffect(() => {
     connection.current = roomService.joinRoom(roomId, {
@@ -50,6 +53,8 @@ function RoomPage() {
     });
     return () => connection.current?.disconnect();
   }, [roomId]);
+
+  useEffect(() => () => executor.current.dispose(), []);
 
   function applyChange(patch) {
     connection.current?.update(patch);
@@ -64,6 +69,27 @@ function RoomPage() {
   async function copyLink() {
     await navigator.clipboard?.writeText(window.location.href);
     setCopied(true);
+  }
+
+  async function runCode() {
+    setIsRunning(true);
+    setOutput('Starting code runner…');
+    try {
+      const result = await executor.current.execute({
+        language: room.language,
+        code: room.code,
+        onLoading: setOutput,
+      });
+      setOutput(result);
+    } catch (executionError) {
+      setOutput('Error: ' + executionError.message);
+    } finally {
+      setIsRunning(false);
+    }
+  }
+
+  function stopCode() {
+    executor.current.stop();
   }
 
   if (error) {
@@ -100,7 +126,14 @@ function RoomPage() {
         <aside className="output-panel">
           <h2>Output</h2>
           <pre>{output}</pre>
-          <button type="button" disabled title="Browser-only execution is added in a later phase">Run code</button>
+          <div className="execution-controls">
+            <button type="button" onClick={runCode} disabled={isRunning}>
+              {isRunning ? 'Running…' : 'Run code'}
+            </button>
+            <button type="button" className="secondary" onClick={stopCode} disabled={!isRunning}>
+              Stop
+            </button>
+          </div>
         </aside>
       </section>
     </main>

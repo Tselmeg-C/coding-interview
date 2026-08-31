@@ -22,6 +22,13 @@ npm test
 The frontend is available on port 5181 and the backend on port 3001. Open the
 forwarded port 5181 URL in Codespaces; port 3001 is the API only.
 
+## Browser-only code execution
+
+JavaScript and Python run in a Web Worker in the participant's browser. Python
+uses Pyodide, which downloads its runtime on the first Python execution. The
+backend never executes submitted code. Use Stop to terminate an unresponsive
+worker and create a fresh one.
+
 ## Frontend
 
 ~~~bash
