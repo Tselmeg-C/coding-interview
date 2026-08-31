@@ -10,7 +10,7 @@ servers:
   - url: http://localhost:3001
     description: Local development server
 paths:
-  /rooms:
+  /api/rooms:
     post:
       operationId: createRoom
       summary: Create an interview room
@@ -23,7 +23,7 @@ paths:
                 $ref: '#/components/schemas/Room'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /rooms/{roomId}:
+  /api/rooms/{roomId}:
     parameters:
       - $ref: '#/components/parameters/RoomId'
     get:

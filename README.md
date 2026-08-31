@@ -59,3 +59,15 @@ integration tests with:
 cd backend
 npm test
 ~~~
+
+## Container
+
+Build the frontend and backend into one image:
+
+~~~bash
+docker build -t coding-interview .
+docker run --rm -p 5181:3001 coding-interview
+~~~
+
+Open http://localhost:5181. The container serves the frontend, HTTP API, and
+Socket.IO service from the same origin.

@@ -6,8 +6,9 @@ function errorResponse(error, message) {
   return { error, message };
 }
 
-export function createApp(store) {
+export function createApp(store, { frontendDirectory } = {}) {
   const app = express();
+  const api = express.Router();
   app.use(cors());
   app.use(express.json({ limit: '256kb' }));
 
@@ -15,11 +16,11 @@ export function createApp(store) {
     response.status(200).json({ status: 'ok' });
   });
 
-  app.post('/rooms', (_request, response) => {
+  api.post('/rooms', (_request, response) => {
     response.status(201).json(store.create());
   });
 
-  app.get('/rooms/:roomId', (request, response) => {
+  api.get('/rooms/:roomId', (request, response) => {
     const room = store.get(request.params.roomId);
     if (!room) {
       response.status(404).json(errorResponse('room_not_found', 'This interview room does not exist.'));
@@ -28,7 +29,7 @@ export function createApp(store) {
     response.status(200).json(room);
   });
 
-  app.patch('/rooms/:roomId', (request, response) => {
+  api.patch('/rooms/:roomId', (request, response) => {
     if (!isRoomUpdate(request.body)) {
       response.status(400).json(errorResponse('validation_error', 'Provide at least one supported room field.'));
       return;
@@ -41,9 +42,22 @@ export function createApp(store) {
     response.status(200).json(room);
   });
 
-  app.use((_request, response) => {
+  api.use((_request, response) => {
     response.status(404).json(errorResponse('not_found', 'The requested endpoint does not exist.'));
   });
+
+  app.use('/api', api);
+
+  if (frontendDirectory) {
+    app.use(express.static(frontendDirectory));
+    app.get(/.*/, (_request, response) => {
+      response.sendFile('index.html', { root: frontendDirectory });
+    });
+  } else {
+    app.use((_request, response) => {
+      response.status(404).json(errorResponse('not_found', 'The requested endpoint does not exist.'));
+    });
+  }
 
   return app;
 }
