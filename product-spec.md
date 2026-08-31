@@ -47,8 +47,7 @@ shared editor, and runs code locally to inspect its output.
   URL such as `/room/:roomId`.
 - The room page displays a copyable share link.
 - Opening the same valid room URL in another browser joins the same room.
-- For the initial release, rooms and their current state may exist only while
-  the server runs. A server restart may clear them.
+- Room code and language persist after a backend restart.
 
 ### Collaborative editor
 
@@ -113,8 +112,8 @@ shared editor, and runs code locally to inspect its output.
 ## Non-goals
 
 - User registration, login, accounts, or user profiles.
-- Persistent interview history, saved room state, or a database in the first
-  release.
+- Interview-history retention policies, scheduled room cleanup, or a complete
+  audit trail.
 - Video, audio, chat, screen sharing, or scheduling.
 - Production-grade permissions, access control, rate limiting, or audit logs.
 - Real-time multiplayer games, payments, or social login.
@@ -132,8 +131,8 @@ shared editor, and runs code locally to inspect its output.
 - Use CodeMirror 6 for the editor and language syntax highlighting.
 - Use Pyodide in a Web Worker for Python execution; use a Web Worker for
   JavaScript execution as well.
-- Begin with in-memory room state. Persistence can be added later without
-  changing the frontend/backend contract.
+- Use SQLite for local durable room state and keep the data-access layer
+  database-agnostic so PostgreSQL can be selected through configuration.
 - Create an `openapi.yaml` for the HTTP API before the backend is treated as
   complete.
 - Add frontend tests, backend endpoint tests, and client/server integration

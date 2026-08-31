@@ -4,16 +4,20 @@ import test from 'node:test';
 import { Server } from 'socket.io';
 import { io as createClient } from 'socket.io-client';
 import { createApp } from '../src/app.js';
+import { createDatabase } from '../src/db/connection.js';
+import { migrateDatabase } from '../src/db/migrate.js';
 import { attachRealtimeHandlers } from '../src/realtime.js';
-import { RoomStore } from '../src/store/roomStore.js';
+import { RoomRepository } from '../src/rooms/roomRepository.js';
 
 function once(socket, event) {
   return new Promise((resolve) => socket.once(event, resolve));
 }
 
 test('broadcasts a room update to every client in the room', async (context) => {
-  const store = new RoomStore();
-  const room = store.create();
+  const database = createDatabase({ DATABASE_URL: 'sqlite::memory:' });
+  await migrateDatabase(database);
+  const store = new RoomRepository(database);
+  const room = await store.create();
   const server = createServer(createApp(store));
   const io = new Server(server);
   attachRealtimeHandlers(io, store);
@@ -29,6 +33,7 @@ test('broadcasts a room update to every client in the room', async (context) => 
     candidate.disconnect();
     io.close();
     server.close();
+    database.destroy();
   });
 
   await Promise.all([once(interviewer, 'connect'), once(candidate, 'connect')]);

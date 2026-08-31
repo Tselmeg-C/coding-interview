@@ -28,8 +28,8 @@ curl --fail https://coding-interview-production-d138.up.railway.app/health
 
 ## Limitations and follow-up work
 
-- Room state is in memory and is lost on server restart, by design for the
-  initial release.
+- SQLite preserves room state across local backend restarts. Production
+  persistence requires configuring PostgreSQL or a mounted durable volume.
 - The collaboration implementation uses last-write-wins updates, not CRDT or
   operational-transform conflict resolution.
 - Pyodide downloads in the participant's browser on first Python execution and

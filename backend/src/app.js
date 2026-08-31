@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-import { isRoomUpdate } from './store/roomStore.js';
+import { isRoomUpdate } from './rooms/roomRepository.js';
 
 function errorResponse(error, message) {
   return { error, message };
@@ -16,12 +16,12 @@ export function createApp(store, { frontendDirectory } = {}) {
     response.status(200).json({ status: 'ok' });
   });
 
-  api.post('/rooms', (_request, response) => {
-    response.status(201).json(store.create());
+  api.post('/rooms', async (_request, response) => {
+    response.status(201).json(await store.create());
   });
 
-  api.get('/rooms/:roomId', (request, response) => {
-    const room = store.get(request.params.roomId);
+  api.get('/rooms/:roomId', async (request, response) => {
+    const room = await store.get(request.params.roomId);
     if (!room) {
       response.status(404).json(errorResponse('room_not_found', 'This interview room does not exist.'));
       return;
@@ -29,12 +29,12 @@ export function createApp(store, { frontendDirectory } = {}) {
     response.status(200).json(room);
   });
 
-  api.patch('/rooms/:roomId', (request, response) => {
+  api.patch('/rooms/:roomId', async (request, response) => {
     if (!isRoomUpdate(request.body)) {
       response.status(400).json(errorResponse('validation_error', 'Provide at least one supported room field.'));
       return;
     }
-    const room = store.update(request.params.roomId, request.body);
+    const room = await store.update(request.params.roomId, request.body);
     if (!room) {
       response.status(404).json(errorResponse('room_not_found', 'This interview room does not exist.'));
       return;

@@ -60,6 +60,22 @@ cd backend
 npm test
 ~~~
 
+## Database
+
+The backend uses SQLite by default, storing its local data at
+backend/data/coding-interview.sqlite3. It applies its schema migrations when
+the server starts, so room state survives backend restarts.
+
+Set DATABASE_URL to select a database explicitly:
+
+~~~bash
+DATABASE_URL=sqlite:./data/coding-interview.sqlite3 npm run dev --prefix backend
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DB_NAME npm run dev --prefix backend
+~~~
+
+Alternatively, set DB_ENGINE=postgresql with DB_NAME, DB_USER, DB_PASSWORD,
+DB_HOST, and DB_PORT. See .env.example for the complete safe template.
+
 ## Container
 
 Build the frontend and backend into one image:

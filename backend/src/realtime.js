@@ -1,4 +1,4 @@
-import { isRoomUpdate } from './store/roomStore.js';
+import { isRoomUpdate } from './rooms/roomRepository.js';
 
 function roomError(socket, error, message) {
   socket.emit('room:error', { error, message });
@@ -6,9 +6,9 @@ function roomError(socket, error, message) {
 
 export function attachRealtimeHandlers(io, store) {
   io.on('connection', (socket) => {
-    socket.on('room:join', (payload) => {
+    socket.on('room:join', async (payload) => {
       const roomId = payload?.roomId;
-      const room = typeof roomId === 'string' ? store.get(roomId) : null;
+      const room = typeof roomId === 'string' ? await store.get(roomId) : null;
       if (!room) {
         roomError(socket, 'room_not_found', 'This interview room does not exist.');
         return;
@@ -17,7 +17,7 @@ export function attachRealtimeHandlers(io, store) {
       socket.emit('room:state', room);
     });
 
-    socket.on('room:update', (payload) => {
+    socket.on('room:update', async (payload) => {
       const roomId = payload?.roomId;
       const patch = payload && typeof payload === 'object'
         ? { code: payload.code, language: payload.language }
@@ -28,7 +28,7 @@ export function attachRealtimeHandlers(io, store) {
         roomError(socket, 'validation_error', 'Provide a room ID and at least one supported room field.');
         return;
       }
-      const room = store.update(roomId, patch);
+      const room = await store.update(roomId, patch);
       if (!room) {
         roomError(socket, 'room_not_found', 'This interview room does not exist.');
         return;
