@@ -19,6 +19,9 @@ Run all automated checks with:
 npm test
 ~~~
 
+The frontend is available on port 5181 and the backend on port 3001. Open the
+forwarded port 5181 URL in Codespaces; port 3001 is the API only.
+
 ## Frontend
 
 ~~~bash
