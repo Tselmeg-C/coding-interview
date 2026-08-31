@@ -1,8 +1,23 @@
 # PairCode Interview
 
-An online coding-interview application. The frontend currently uses a mock
-room client while the contract-aligned Express and Socket.IO backend is
-implemented with in-memory room state. The next phase connects them.
+An online coding-interview application with a React frontend, an Express API,
+and Socket.IO-based room synchronization. Room state is held in memory for the
+initial release.
+
+## Full application
+
+Install workspace dependencies once, then start frontend and backend together:
+
+~~~bash
+npm install
+npm run dev
+~~~
+
+Run all automated checks with:
+
+~~~bash
+npm test
+~~~
 
 ## Frontend
 
@@ -27,7 +42,8 @@ npm install
 npm run dev
 ~~~
 
-The backend listens on port 3001 by default. Run its endpoint tests with:
+The backend listens on port 3001 by default. Run its endpoint and real-time
+integration tests with:
 
 ~~~bash
 cd backend

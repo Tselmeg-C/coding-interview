@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import CodeEditor from './components/CodeEditor';
-import { mockRoomService } from './services/roomService';
+import { roomService } from './services/roomService';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ function HomePage() {
     setIsCreating(true);
     setError('');
     try {
-      const room = await mockRoomService.createRoom();
+      const room = await roomService.createRoom();
       navigate('/room/' + room.id);
     } catch {
       setError('We could not create an interview room. Please try again.');
@@ -40,36 +40,24 @@ function RoomPage() {
   const [error, setError] = useState('');
   const [output, setOutput] = useState('Run code to see output here.');
   const [copied, setCopied] = useState(false);
+  const connection = useRef(null);
 
   useEffect(() => {
-    let active = true;
-    mockRoomService.getRoom(roomId)
-      .then((loadedRoom) => {
-        if (active) {
-          setRoom(loadedRoom);
-          setStatus('connected');
-        }
-      })
-      .catch((roomError) => {
-        if (active) {
-          setError(roomError.message);
-          setStatus('disconnected');
-        }
-      });
-    return () => { active = false; };
+    connection.current = roomService.joinRoom(roomId, {
+      onStatus: setStatus,
+      onRoom: setRoom,
+      onError: (roomError) => setError(roomError.message),
+    });
+    return () => connection.current?.disconnect();
   }, [roomId]);
 
-  async function applyChange(patch) {
-    try {
-      setRoom(await mockRoomService.updateRoom(roomId, patch));
-    } catch (roomError) {
-      setError(roomError.message);
-    }
+  function applyChange(patch) {
+    connection.current?.update(patch);
   }
 
   async function changeLanguage(event) {
     const language = event.target.value;
-    await applyChange({ language, code: mockRoomService.templateFor(language) });
+    applyChange({ language, code: roomService.templateFor(language) });
     setOutput('Language changed. Run code to see output here.');
   }
 
