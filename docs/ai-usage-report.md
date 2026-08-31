@@ -23,6 +23,7 @@ npm test
 npm run build --prefix frontend
 docker build -t coding-interview .
 docker run --rm -p 5181:3001 coding-interview
+curl --fail https://coding-interview-production-d138.up.railway.app/health
 ~~~
 
 ## Limitations and follow-up work

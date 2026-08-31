@@ -78,6 +78,8 @@ Railway deploys this repository using the root Dockerfile. The container reads
 the platform-provided PORT environment variable and serves the frontend, API,
 and Socket.IO endpoint from one public service.
 
+Live application: https://coding-interview-production-d138.up.railway.app/
+
 After a successful Railway deployment, use the service's generated public
 domain to open the application and verify that two browser sessions can join
 the same room and synchronize edits.
