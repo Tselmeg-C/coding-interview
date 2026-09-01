@@ -7,3 +7,9 @@
 - Run the relevant tests before committing a completed workflow phase.
 - Make a concise local Git commit after each verified phase. Do not push unless
   explicitly asked.
+- For deployment work, keep the app and Postgres runnable through Docker
+  Compose; add an integration check and a two-browser end-to-end check before
+  enabling deployment automation.
+- Railway production deployments must use the managed PostgreSQL service via
+  `DATABASE_URL`. Keep Railway tokens in GitHub secrets and public deployment
+  identifiers in GitHub variables; never commit credential values.

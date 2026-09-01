@@ -5,4 +5,7 @@ backend/coverage/
 backend/data/
 node_modules/
 coverage/
+.playwright/
+test-results/
+.railway/
 .env

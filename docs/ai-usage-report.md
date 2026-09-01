@@ -13,8 +13,9 @@ Interview, including the review and verification applied to the generated work.
 | Frontend | Created the React/Vite prototype, centralized room service boundary, CodeMirror editor, and UI states. | Ran the frontend locally and verified room creation, sharing, language selection, and visual behavior. |
 | API and backend | Defined the OpenAPI contract, Express routes, in-memory store, and Socket.IO room protocol. | Ran endpoint tests and two-client Socket.IO synchronization tests. |
 | Browser execution | Added JavaScript and Python Web Worker runners and Pyodide integration. | Confirmed Python execution in the browser and verified the backend never receives code for execution. |
-| Containerization | Created the multi-stage Dockerfile and same-origin production serving arrangement. | Built the Docker image, requested its health endpoint, and verified it served the frontend HTML. |
-| Documentation | Maintained local setup, test, container, and homework-answer documentation. | Reviewed commands against the project scripts and deployment approach. |
+| Containerization and deployment | Created the multi-stage Dockerfile, Docker Compose stack, Postgres readiness checks, and same-origin production serving arrangement. | Built the Compose stack, verified container health, and ran the Postgres integration smoke test. |
+| End-to-end testing and CI/CD | Added a Playwright two-session collaboration test and GitHub Actions gates for unit, integration, E2E, deployment, and post-deploy health verification. | Ran the two-browser test locally against Compose; deployment remains protected by CI success and repository-provided Railway configuration. |
+| Documentation | Maintained local setup, test, container, deployment, and homework-answer documentation. | Reviewed commands against the project scripts and deployment approach. |
 
 ## Verification commands
 
@@ -23,18 +24,20 @@ npm test
 npm run build --prefix frontend
 docker build -t coding-interview .
 docker run --rm -p 5181:3001 coding-interview
-curl --fail https://coding-interview-production-d138.up.railway.app/health
+docker compose up --build --wait
+npm run test:integration
+npm run test:e2e
 ~~~
 
 ## Limitations and follow-up work
 
-- SQLite preserves room state across local backend restarts. Production
-  persistence requires configuring PostgreSQL or a mounted durable volume.
+- Local development defaults to SQLite; the Railway production service must be
+  configured with its managed PostgreSQL `DATABASE_URL` before production use.
 - The collaboration implementation uses last-write-wins updates, not CRDT or
   operational-transform conflict resolution.
 - Pyodide downloads in the participant's browser on first Python execution and
   requires network access to its configured runtime CDN.
 - Browser Workers isolate code from the application UI and server, but are not
   a substitute for a hardened multi-tenant remote execution sandbox.
-- Production monitoring, CI/CD automation, a production database, and database
-  migrations are future deployment/infrastructure work.
+- Production observability, alerting, release environments, and incident
+  response are future operational work.
