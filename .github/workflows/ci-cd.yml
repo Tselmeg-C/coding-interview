@@ -64,10 +64,11 @@ jobs:
           node-version: 22
       - name: Deploy to Railway
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
           RAILWAY_SERVICE: ${{ vars.RAILWAY_SERVICE }}
           RAILWAY_ENVIRONMENT: ${{ vars.RAILWAY_ENVIRONMENT }}
-        run: npx --yes @railway/cli up --ci --service "$RAILWAY_SERVICE" --environment "$RAILWAY_ENVIRONMENT"
+        run: npx --yes @railway/cli up --ci --project "$RAILWAY_PROJECT_ID" --service "$RAILWAY_SERVICE" --environment "$RAILWAY_ENVIRONMENT"
       - name: Verify deployed health endpoint
         env:
           RAILWAY_PUBLIC_URL: ${{ vars.RAILWAY_PUBLIC_URL }}

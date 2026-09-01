@@ -11,5 +11,6 @@
   Compose; add an integration check and a two-browser end-to-end check before
   enabling deployment automation.
 - Railway production deployments must use the managed PostgreSQL service via
-  `DATABASE_URL`. Keep Railway tokens in GitHub secrets and public deployment
-  identifiers in GitHub variables; never commit credential values.
+  `DATABASE_URL`. Keep the Railway account/workspace token in the GitHub
+  `RAILWAY_API_TOKEN` secret and deployment identifiers in GitHub variables;
+  never commit credential values.

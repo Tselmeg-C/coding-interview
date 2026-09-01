@@ -141,10 +141,12 @@ checks pass and verifies `/health` afterwards.
 
 Before enabling the deployment job, configure these GitHub repository values:
 
-- Secret: `RAILWAY_TOKEN` — a Railway project token scoped to production.
-- Variables: `RAILWAY_SERVICE`, `RAILWAY_ENVIRONMENT`, and
-  `RAILWAY_PUBLIC_URL` — the existing service, production environment, and
-  public base URL respectively.
+- Secret: `RAILWAY_API_TOKEN` — a Railway account or workspace token. Prefer
+  workspace scope when Railway offers that choice.
+- Variables: `RAILWAY_PROJECT_ID`, `RAILWAY_SERVICE`,
+  `RAILWAY_ENVIRONMENT`, and `RAILWAY_PUBLIC_URL` — the Railway project ID,
+  existing app service, production environment, and public base URL
+  respectively.
 
 No credential values belong in the repository, GitHub variables, command
 output, or documentation. The workflow invokes Railway's CI mode and uses the
