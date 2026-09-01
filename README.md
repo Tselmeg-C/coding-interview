@@ -152,6 +152,11 @@ by `RAILWAY_ENVIRONMENT`.
   existing app service, production environment, and public base URL
   respectively.
 
+The workflow also accepts these four deployment identifiers as environment
+secrets when the GitHub environment UI does not expose them through the
+variables context. The values are not credentials, but this fallback avoids
+blocking deployment because of GitHub environment-variable scope behavior.
+
 No credential values belong in the repository, GitHub variables, command
 output, or documentation. The workflow invokes Railway's CI mode and uses the
 configured service and environment explicitly.
