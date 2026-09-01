@@ -35,8 +35,10 @@ The local Compose stack and the hosted backend, frontend, integration, and E2E
 CI jobs have passed. Earlier hosted deployment attempts stopped before Railway
 deployment because GitHub did not inject `RAILWAY_PROJECT_ID` into the job.
 Commit `747a878` accepts deployment identifiers from environment secrets as a
-fallback. Its workflow is still in progress as of this report update; see
-`docs/deployment-handoff.md` for the verified state and next action.
+fallback. Its workflow has passed, including Railway deployment and public
+health verification. A subsequent Playwright run against the public Railway
+domain passed the two-browser collaboration journey; see
+`docs/deployment-handoff.md` for the final state.
 
 ## Limitations and follow-up work
 

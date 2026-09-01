@@ -177,6 +177,7 @@ As of September 1, 2026:
   `helpful-intuition / production` environment, then rerun the workflow before
   treating this pipeline as active production CD.
 - Commit `747a878` adds a fallback that accepts the deployment identifiers as
-  GitHub environment secrets as well as variables. Its workflow is in progress
-  at the time of this update; consult `docs/deployment-handoff.md` before
-  recording deployment success.
+  GitHub environment secrets as well as variables. Its GitHub Actions run
+  passed every CI, Railway deployment, and public health-check job.
+- Public browser verification passed: two independent browser sessions created
+  and joined a Railway-hosted room, then synchronized an editor update.

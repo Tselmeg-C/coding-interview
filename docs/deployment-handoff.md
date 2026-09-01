@@ -7,10 +7,12 @@ Updated: September 1, 2026.
 - Branch: `main`
 - Latest pushed commit: `747a878` — accepts Railway deployment identifiers
   from GitHub environment variables or environment secrets.
-- Current workflow: [CI and Railway deployment run 33498690097](https://github.com/Tselmeg-C/coding-interview/actions/runs/33498690097)
-- Current workflow state when this handoff was written: `in_progress`.
-- Do not mark continuous deployment complete until this run deploys and its
-  post-deployment `/health` check succeeds.
+- Successful workflow: [CI and Railway deployment run 33498690097](https://github.com/Tselmeg-C/coding-interview/actions/runs/33498690097)
+- Workflow conclusion: `success`. Backend, frontend, full-stack, deploy, and
+  post-deployment public `/health` checks all passed.
+- Public Playwright verification also passed after deployment: two independent
+  browser contexts created/joined a real Railway-hosted room and synchronized
+  an editor update.
 
 ## Verified work
 
@@ -59,16 +61,15 @@ environment secrets by commit `747a878`:
 Environment secrets are the recommended recovery path if GitHub does not make
 the environment variables available to the workflow.
 
-## Next-session checklist
+## Next-session work
 
-1. Open run `33498690097` and inspect the deploy job result.
-2. If preflight reports a missing name, add that exact name under the selected
-   GitHub environment's **Environment secrets**, then rerun failed jobs.
-3. If Railway deploys, confirm the workflow's public `/health` step succeeds.
-4. Manually test the public application with two browser sessions: create a
-   room, open its share link in another browser, edit in one session, and
-   confirm the other receives the update.
-5. Update README and this handoff with the final workflow URL/conclusion only
-   after both the health check and manual collaboration check pass.
-6. Do not print, commit, or request secret values. Use
+Deployment is complete. Future work is operational hardening rather than a
+release blocker:
+
+1. Add production observability, alerting, and a documented incident response
+   process.
+2. Consider preview/staging environments before production for larger changes.
+3. Keep the existing CI, health, and two-browser checks required for changes
+   to the application or deployment stack.
+4. Do not print, commit, or request secret values. Use
    `env -u GITHUB_TOKEN` for GitHub CLI and Git push operations.
