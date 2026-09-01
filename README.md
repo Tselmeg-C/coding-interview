@@ -151,3 +151,19 @@ Before enabling the deployment job, configure these GitHub repository values:
 No credential values belong in the repository, GitHub variables, command
 output, or documentation. The workflow invokes Railway's CI mode and uses the
 configured service and environment explicitly.
+
+## Project progress
+
+As of September 1, 2026:
+
+- The application is publicly available at the Railway domain above.
+- The local production-like Compose stack, backed by Postgres, has passed its
+  HTTP integration smoke test and two-browser collaboration E2E test.
+- GitHub Actions has successfully run the backend, frontend, Compose, and E2E
+  jobs for the deployment pipeline.
+- Continuous deployment is not yet verified: the Railway CLI job received no
+  GitHub deployment values, so it could not select a Railway project and the
+  post-deploy public health check was skipped. Add the exact secret and
+  variables named in the CI/CD section to the GitHub `production` environment,
+  then rerun the workflow before treating this pipeline as active production
+  CD.
