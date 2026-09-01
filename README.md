@@ -176,3 +176,7 @@ As of September 1, 2026:
   variables named in the CI/CD section to the GitHub
   `helpful-intuition / production` environment, then rerun the workflow before
   treating this pipeline as active production CD.
+- Commit `747a878` adds a fallback that accepts the deployment identifiers as
+  GitHub environment secrets as well as variables. Its workflow is in progress
+  at the time of this update; consult `docs/deployment-handoff.md` before
+  recording deployment success.
