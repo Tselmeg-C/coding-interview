@@ -56,7 +56,7 @@ jobs:
     needs: full-stack
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: production
+    environment: helpful-intuition / production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

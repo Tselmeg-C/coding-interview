@@ -141,6 +141,10 @@ checks pass and verifies `/health` afterwards.
 
 Before enabling the deployment job, configure these GitHub repository values:
 
+The workflow uses the GitHub environment named `helpful-intuition / production`.
+This GitHub configuration scope is separate from the Railway environment named
+by `RAILWAY_ENVIRONMENT`.
+
 - Secret: `RAILWAY_API_TOKEN` — a Railway account or workspace token. Prefer
   workspace scope when Railway offers that choice.
 - Variables: `RAILWAY_PROJECT_ID`, `RAILWAY_SERVICE`,
@@ -164,6 +168,6 @@ As of September 1, 2026:
 - Continuous deployment is not yet verified: the Railway CLI job received no
   GitHub deployment values, so it could not select a Railway project and the
   post-deploy public health check was skipped. Add the exact secret and
-  variables named in the CI/CD section to the GitHub `production` environment,
-  then rerun the workflow before treating this pipeline as active production
-  CD.
+  variables named in the CI/CD section to the GitHub
+  `helpful-intuition / production` environment, then rerun the workflow before
+  treating this pipeline as active production CD.
